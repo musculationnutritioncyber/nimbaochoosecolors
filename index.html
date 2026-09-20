@@ -172,7 +172,7 @@ header img { height: 30px; width: auto; display: block; }
       <span class="n">← Not for me</span>
       <span class="l">I'd wear it →</span>
     </div>
-    <p style="font-size:15px">Swipe, or just tap the buttons. It takes about a minute.</p>
+    <p style="font-size:15px">Swipe, or just tap the buttons. It takes 2 to 3 minutes, and every answer counts even if you stop early.</p>
     <button class="btn blue" id="start">Start</button>
   </section>
 
@@ -225,7 +225,7 @@ header img { height: 30px; width: auto; display: block; }
     return a;
   }
   var imgs = {};
-  var img = function (id) { return imgs[id] || '/assets/img/' + id + '.webp'; };
+  var img = function (id) { return imgs[id] || '/assets/img/' + id + '.webp?v=2'; };
 
   var names = {};
   var S = null; // { sid, src, order[], votes[{id,v}], sent, seq, pending, fav, done }
@@ -327,7 +327,7 @@ header img { height: 30px; width: auto; display: block; }
     S.votes.push({ id: top.dataset.id, v: v });
     store.set(S);
     if (navigator.vibrate && v) navigator.vibrate(12);
-    if (S.votes.length % 5 === 0) flush();
+    if (S.votes.length % 3 === 0) flush();
     if (S.votes.length >= S.order.length) { progress(); return setTimeout(finishDeck, 240); }
 
     var nextId = S.order[S.votes.length + 2];

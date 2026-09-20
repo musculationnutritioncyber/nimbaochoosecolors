@@ -1,6 +1,6 @@
 {
  "product": "Cloud Slippers",
- "perVoter": 30,
+ "perVoter": 999,
  "colors": [
   {
    "id": "01",
@@ -70,11 +70,6 @@
   {
    "id": "14",
    "name": "Grey Camo",
-   "active": true
-  },
-  {
-   "id": "15",
-   "name": "Black Camo",
    "active": true
   },
   {
@@ -258,11 +253,6 @@
    "active": true
   },
   {
-   "id": "56",
-   "name": "Evergreen Gold",
-   "active": true
-  },
-  {
    "id": "57",
    "name": "Gingerbread",
    "active": true
@@ -338,11 +328,6 @@
    "active": true
   },
   {
-   "id": "74",
-   "name": "Pearl Cream",
-   "active": true
-  },
-  {
    "id": "75",
    "name": "Champagne Glitter",
    "active": true
@@ -390,11 +375,6 @@
   {
    "id": "95",
    "name": "Toffee",
-   "active": true
-  },
-  {
-   "id": "96",
-   "name": "Red Mahogany",
    "active": true
   }
  ]

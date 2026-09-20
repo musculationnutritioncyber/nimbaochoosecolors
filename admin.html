@@ -132,7 +132,7 @@ tr.off td:not(:last-child) { opacity: .4; }
     var min = Number($('min').value) || 0;
     var rows = data.colors.map(function (c) {
       var n = c.l + c.d;
-      return { id: c.id, name: c.name, img: c.img || '/assets/img/' + c.id + '.webp', active: c.active, l: c.l, d: c.d, f: c.f, n: n, rate: n ? c.l / n : 0, score: wilson(c.l, n) };
+      return { id: c.id, name: c.name, img: c.img || '/assets/img/' + c.id + '.webp?v=2', active: c.active, l: c.l, d: c.d, f: c.f, n: n, rate: n ? c.l / n : 0, score: wilson(c.l, n) };
     }).filter(function (r) { return r.n >= min; });
     var by = {
       score: function (a, b) { return b.score - a.score || b.f - a.f; },
