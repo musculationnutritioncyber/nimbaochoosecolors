@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Color vote · Admin</title>
+<link rel="icon" href="/assets/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { --ink:#2e2a39; --muted:#7a768a; --blue:#516dff; --love:#ff3b6b; --bg:#f6f6fa; --line:#e7e6ef; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: Roboto, system-ui, sans-serif; }
+h1, h2, th, .kpi b, button, .tab { font-family: Montserrat, system-ui, sans-serif; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
+header { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+header img { height: 28px; }
+header h1 { font-size: 20px; margin: 0; font-weight: 800; flex: 1; }
+button { border: 0; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 700; font-size: 14px; padding: 10px 18px; cursor: pointer; }
+button.ghost { background: #fff; color: var(--ink); border: 1.5px solid var(--line); }
+.login { max-width: 340px; margin: 18vh auto 0; text-align: center; background: #fff; padding: 28px; border-radius: 20px; box-shadow: 0 10px 30px rgba(46,42,57,.1); }
+.login img { height: 32px; margin-bottom: 12px; }
+.login input { width: 100%; font-size: 20px; text-align: center; padding: 14px; border: 1.5px solid var(--line); border-radius: 12px; margin: 12px 0; letter-spacing: .2em; }
+.login button { width: 100%; padding: 14px; font-size: 16px; background: var(--blue); }
+.err { color: var(--love); font-size: 14px; min-height: 18px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.kpi { background: #fff; border-radius: 16px; padding: 14px 16px; }
+.kpi span { display: block; font-size: 13px; color: var(--muted); }
+.kpi b { font-size: 22px; font-weight: 800; }
+.tools { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+.tab { border: 1.5px solid var(--line); background: #fff; color: var(--ink); border-radius: 999px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
+.tab.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.tools label { font-size: 13px; color: var(--muted); margin-left: auto; }
+.tools input { width: 64px; padding: 6px 8px; border: 1.5px solid var(--line); border-radius: 8px; font-size: 14px; }
+.note { font-size: 13px; color: var(--muted); margin: 0 0 12px; }
+.tablewrap { background: #fff; border-radius: 16px; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 640px; }
+th { text-align: left; font-size: 12px; color: var(--muted); font-weight: 700; padding: 12px 10px; border-bottom: 1.5px solid var(--line); white-space: nowrap; }
+td { padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 15px; vertical-align: middle; }
+tr:last-child td { border-bottom: 0; }
+td.rank { font: 800 16px Montserrat, sans-serif; color: var(--muted); width: 44px; }
+tr.top td.rank { color: var(--love); }
+td img { width: 64px; height: 64px; object-fit: contain; border-radius: 10px; background: #fff; border: 1px solid var(--line); cursor: zoom-in; display: block; }
+td.nm { font-weight: 500; } td.nm small { display: block; color: var(--muted); font-size: 12px; }
+.rate { display: flex; align-items: center; gap: 8px; min-width: 170px; }
+.rate i { flex: 1; height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; display: block; }
+.rate i u { display: block; height: 100%; background: var(--love); border-radius: 4px; }
+.rate b { width: 44px; text-align: right; font-family: Montserrat, sans-serif; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.sw { position: relative; width: 46px; height: 28px; border-radius: 999px; background: var(--line); border: 0; padding: 0; cursor: pointer; transition: background .15s; }
+.sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25); transition: left .15s; }
+.sw.on { background: var(--blue); } .sw.on::after { left: 21px; }
+tr.off td:not(:last-child) { opacity: .4; }
+.add { background: #fff; border-radius: 16px; padding: 14px 16px; margin-bottom: 16px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.add b { font-family: Montserrat, sans-serif; font-size: 14px; }
+.add input[type=text] { flex: 1; min-width: 160px; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 10px; font-size: 15px; }
+.add small { flex-basis: 100%; color: var(--muted); }
+.zoom { position: fixed; inset: 0; background: rgba(46,42,57,.8); display: none; place-items: center; z-index: 9; cursor: zoom-out; }
+.zoom.on { display: grid; } .zoom img { max-width: 92vw; max-height: 92vh; border-radius: 18px; background: #fff; }
+</style>
+</head>
+<body>
+<div class="login" id="login">
+  <img src="/assets/logo.png" alt="Nimbao">
+  <div>Color vote · Admin</div>
+  <form id="form"><input id="pin" type="password" inputmode="numeric" placeholder="PIN" autocomplete="off" autofocus>
+  <div class="err" id="err"></div>
+  <button>Open</button></form>
+</div>
+
+<div class="wrap" id="app" hidden>
+  <header>
+    <img src="/assets/logo.png" alt="Nimbao">
+    <h1 id="title">Color vote</h1>
+    <button class="ghost" id="refresh">Refresh</button>
+    <button id="csv">Export CSV</button>
+  </header>
+  <div class="kpis" id="kpis"></div>
+  <form class="add" id="add">
+    <b>Add a photo</b>
+    <input type="file" id="file" accept="image/*" required>
+    <input type="text" id="cname" placeholder="Color name (e.g. Dark Green)" maxlength="40" required>
+    <button id="addBtn">Add to the vote</button>
+    <small id="deckinfo"></small>
+  </form>
+  <div class="tools" id="tabs">
+    <span class="tab on" data-sort="score">Best bets</span>
+    <span class="tab" data-sort="rate">Love rate</span>
+    <span class="tab" data-sort="fav">Would buy first</span>
+    <span class="tab" data-sort="worst">Least loved</span>
+    <span class="tab" data-sort="deck">Manage photos</span>
+    <label>Min. votes <input id="min" type="number" min="0" value="0"></label>
+  </div>
+  <p class="note" id="note"></p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>#</th><th></th><th>Color</th><th>Love rate</th><th class="num">♥ Loves</th><th class="num">✕ Nopes</th><th class="num">Votes</th><th class="num">★ Buy first</th><th>In the vote</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>
+</div>
+<div class="zoom" id="zoom"><img alt=""></div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var pin = '', data = null, sort = 'score';
+  try { pin = sessionStorage.getItem('cv-pin') || ''; } catch (e) {}
+
+  // Wilson lower bound: a colour with 9/10 loves must not outrank one with 850/1000.
+  function wilson(l, n) {
+    if (!n) return 0;
+    var z = 1.96, p = l / n;
+    return (p + z * z / (2 * n) - z * Math.sqrt((p * (1 - p) + z * z / (4 * n)) / n)) / (1 + z * z / n);
+  }
+
+  function load() {
+    $('refresh').textContent = 'Loading…';
+    return fetch('/api/admin', { headers: { 'x-admin-pin': pin }, cache: 'no-store' }).then(function (r) {
+      if (r.status === 401) throw new Error('Wrong PIN');
+      if (!r.ok) throw new Error('Server error ' + r.status);
+      return r.json();
+    }).then(function (d) {
+      data = d;
+      try { sessionStorage.setItem('cv-pin', pin); } catch (e) {}
+      $('login').hidden = true; $('app').hidden = false;
+      render();
+      $('refresh').textContent = d.pending ? 'Counting… ' + d.pending + ' left' : 'Refresh';
+      if (d.pending) return load(); // the server counts in slices
+    });
+  }
+
+  function rowsSorted() {
+    var min = Number($('min').value) || 0;
+    var rows = data.colors.map(function (c) {
+      var n = c.l + c.d;
+      return { id: c.id, name: c.name, img: c.img || '/assets/img/' + c.id + '.webp', active: c.active, l: c.l, d: c.d, f: c.f, n: n, rate: n ? c.l / n : 0, score: wilson(c.l, n) };
+    }).filter(function (r) { return r.n >= min; });
+    var by = {
+      score: function (a, b) { return b.score - a.score || b.f - a.f; },
+      rate: function (a, b) { return b.rate - a.rate || b.n - a.n; },
+      fav: function (a, b) { return b.f - a.f || b.score - a.score; },
+      worst: function (a, b) { return (a.n ? a.rate : 2) - (b.n ? b.rate : 2) || b.n - a.n; },
+      deck: function () { return 0; }
+    };
+    return rows.sort(by[sort]);
+  }
+
+  function render() {
+    $('title').textContent = data.product + ' · Color vote';
+    var kp = [
+      ['Voters', data.voters],
+      ['Finished all cards', data.completed + (data.voters ? ' (' + Math.round(data.completed / data.voters * 100) + '%)' : '')],
+      ['Swipes', data.swipes],
+      ['Last vote', data.lastVote ? new Date(data.lastVote).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—']
+    ];
+    $('kpis').innerHTML = kp.map(function (k) { return '<div class="kpi"><span>' + k[0] + '</span><b>' + k[1] + '</b></div>'; }).join('');
+    $('note').textContent = {
+      score: 'Best bets = love rate corrected for the number of votes, so a colour seen by few people cannot top the list by luck.',
+      rate: 'Raw love rate = loves ÷ votes. Check the Votes column before trusting a high rate.',
+      fav: 'The pair each voter picked as the one she would buy first, among those she loved.',
+      worst: 'Lowest love rate first: the colours to drop.',
+      deck: 'Switch off any photo you do not want voters to see. Changes reach the voting page within a minute; votes already cast are kept.'
+    }[sort];
+    var on = data.colors.filter(function (c) { return c.active; }).length;
+    $('deckinfo').textContent = on + ' photos in the vote out of ' + data.colors.length + '. Each voter sees ' + Math.min(on, data.perVoter || 30) + ' of them, picked at random. Use white-background photos, square if possible.';
+    $('rows').innerHTML = rowsSorted().map(function (r, i) {
+      var pct = Math.round(r.rate * 100);
+      return '<tr class="' + (i < 10 && sort !== 'worst' && sort !== 'deck' ? 'top' : '') + (r.active ? '' : ' off') + '"><td class="rank">' + (i + 1) + '</td>' +
+        '<td><img loading="lazy" src="' + r.img + '" alt=""></td>' +
+        '<td class="nm">' + r.name + '<small>#' + r.id + (r.active ? '' : ' · hidden from voters') + '</small></td>' +
+        '<td><div class="rate"><i><u style="width:' + pct + '%"></u></i><b>' + (r.n ? pct + '%' : '—') + '</b></div></td>' +
+        '<td class="num">' + r.l + '</td><td class="num">' + r.d + '</td><td class="num">' + r.n + '</td><td class="num">' + r.f + '</td><td><button type="button" class="sw' + (r.active ? ' on' : '') + '" data-id="' + r.id + '" aria-label="In the vote"></button></td></tr>';
+    }).join('');
+  }
+
+  $('form').onsubmit = function (e) {
+    e.preventDefault(); pin = $('pin').value.trim(); $('err').textContent = '';
+    load().catch(function (er) { $('err').textContent = er.message; });
+  };
+  $('refresh').onclick = function () { load().catch(function (er) { alert(er.message); }); };
+  $('min').oninput = function () { if (data) render(); };
+  $('tabs').onclick = function (e) {
+    var t = e.target.closest('.tab'); if (!t) return;
+    sort = t.dataset.sort;
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (x) { x.classList.toggle('on', x === t); });
+    render();
+  };
+  function post(body) {
+    return fetch('/api/admin', { method: 'POST', headers: { 'x-admin-pin': pin, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'Error'); }); });
+  }
+  // Photos are shrunk in the browser (900 px, white background) before upload.
+  function shrink(file) {
+    return new Promise(function (ok, ko) {
+      var im = new Image();
+      im.onload = function () {
+        var c = document.createElement('canvas'); c.width = c.height = 900;
+        var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, 900, 900);
+        var k = Math.min(900 / im.width, 900 / im.height), w = im.width * k, h = im.height * k;
+        x.drawImage(im, (900 - w) / 2, (900 - h) / 2, w, h);
+        ok(c.toDataURL('image/jpeg', 0.86));
+      };
+      im.onerror = function () { ko(new Error('Cannot read this image')); };
+      im.src = URL.createObjectURL(file);
+    });
+  }
+  $('add').onsubmit = function (e) {
+    e.preventDefault();
+    var btn = $('addBtn'); btn.disabled = true; btn.textContent = 'Uploading…';
+    shrink($('file').files[0]).then(function (dataUrl) { return post({ action: 'add', name: $('cname').value, dataUrl: dataUrl }); })
+      .then(function () { $('add').reset(); return load(); })
+      .catch(function (er) { alert(er.message); })
+      .then(function () { btn.disabled = false; btn.textContent = 'Add to the vote'; });
+  };
+  $('rows').onclick = function (e) {
+    var sw = e.target.closest('.sw');
+    if (sw) {
+      var c = data.colors.filter(function (x) { return x.id === sw.dataset.id; })[0];
+      c.active = !c.active; render();
+      post({ action: 'active', ids: [c.id], active: c.active }).catch(function (er) { c.active = !c.active; render(); alert(er.message); });
+      return;
+    }
+    if (e.target.tagName === 'IMG') { $('zoom').firstElementChild.src = e.target.src; $('zoom').classList.add('on'); }
+  };
+  $('zoom').onclick = function () { $('zoom').classList.remove('on'); };
+  $('csv').onclick = function () {
+    var lines = ['rank,id,color,love_rate,loves,nopes,votes,buy_first,score'];
+    rowsSorted().forEach(function (r, i) {
+      lines.push([i + 1, r.id, '"' + r.name + '"', r.rate.toFixed(4), r.l, r.d, r.n, r.f, r.score.toFixed(4)].join(','));
+    });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([lines.join('\n')], { type: 'text/csv' }));
+    a.download = 'color-vote-' + new Date().toISOString().slice(0, 10) + '.csv';
+    a.click();
+  };
+  if (pin) load().catch(function () { pin = ''; });
+})();
+</script>
+</body>
+</html>

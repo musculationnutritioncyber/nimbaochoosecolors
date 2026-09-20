@@ -1,0 +1,476 @@
+{
+ "product": "Cloud Slippers",
+ "perVoter": 30,
+ "colors": [
+  {
+   "id": "01",
+   "name": "Heather Grey Marl",
+   "active": true
+  },
+  {
+   "id": "02",
+   "name": "Oatmeal Marl",
+   "active": true
+  },
+  {
+   "id": "03",
+   "name": "Charcoal Marl",
+   "active": true
+  },
+  {
+   "id": "04",
+   "name": "Donegal Tweed",
+   "active": true
+  },
+  {
+   "id": "05",
+   "name": "Black Leopard",
+   "active": true
+  },
+  {
+   "id": "06",
+   "name": "Grey Leopard",
+   "active": true
+  },
+  {
+   "id": "07",
+   "name": "Navy Leopard",
+   "active": true
+  },
+  {
+   "id": "08",
+   "name": "Blush Leopard",
+   "active": true
+  },
+  {
+   "id": "09",
+   "name": "Cow Print Black",
+   "active": true
+  },
+  {
+   "id": "10",
+   "name": "Cow Print Brown",
+   "active": true
+  },
+  {
+   "id": "11",
+   "name": "Zebra",
+   "active": true
+  },
+  {
+   "id": "12",
+   "name": "Snake Python",
+   "active": true
+  },
+  {
+   "id": "13",
+   "name": "Tortoiseshell",
+   "active": true
+  },
+  {
+   "id": "14",
+   "name": "Grey Camo",
+   "active": true
+  },
+  {
+   "id": "15",
+   "name": "Black Camo",
+   "active": true
+  },
+  {
+   "id": "16",
+   "name": "Navy Camo",
+   "active": true
+  },
+  {
+   "id": "17",
+   "name": "Sand Camo",
+   "active": true
+  },
+  {
+   "id": "18",
+   "name": "Buffalo Check Red",
+   "active": true
+  },
+  {
+   "id": "19",
+   "name": "Buffalo Check Black",
+   "active": true
+  },
+  {
+   "id": "20",
+   "name": "Buffalo Check Grey",
+   "active": true
+  },
+  {
+   "id": "21",
+   "name": "Houndstooth Black",
+   "active": true
+  },
+  {
+   "id": "22",
+   "name": "Houndstooth Brown",
+   "active": true
+  },
+  {
+   "id": "25",
+   "name": "Argyle",
+   "active": true
+  },
+  {
+   "id": "26",
+   "name": "Herringbone",
+   "active": true
+  },
+  {
+   "id": "27",
+   "name": "Polka Dot",
+   "active": true
+  },
+  {
+   "id": "28",
+   "name": "Breton",
+   "active": true
+  },
+  {
+   "id": "29",
+   "name": "Aztec",
+   "active": true
+  },
+  {
+   "id": "30",
+   "name": "Cable Knit Cream",
+   "active": false
+  },
+  {
+   "id": "31",
+   "name": "Colour Block",
+   "active": true
+  },
+  {
+   "id": "32",
+   "name": "Nordic Fair Isle",
+   "active": true
+  },
+  {
+   "id": "33",
+   "name": "Nordic Snowflake",
+   "active": true
+  },
+  {
+   "id": "34",
+   "name": "Ditsy Floral",
+   "active": true
+  },
+  {
+   "id": "35",
+   "name": "Navy",
+   "active": true
+  },
+  {
+   "id": "36",
+   "name": "Espresso Brown",
+   "active": true
+  },
+  {
+   "id": "37",
+   "name": "Pumpkin Spice",
+   "active": true
+  },
+  {
+   "id": "38",
+   "name": "Terracotta",
+   "active": true
+  },
+  {
+   "id": "39",
+   "name": "Burgundy Wine",
+   "active": true
+  },
+  {
+   "id": "40",
+   "name": "Forest Green",
+   "active": true
+  },
+  {
+   "id": "41",
+   "name": "Chocolate Leopard",
+   "active": true
+  },
+  {
+   "id": "42",
+   "name": "Snow Leopard Cream",
+   "active": true
+  },
+  {
+   "id": "43",
+   "name": "Wine Leopard",
+   "active": true
+  },
+  {
+   "id": "44",
+   "name": "Cheetah Camel",
+   "active": true
+  },
+  {
+   "id": "45",
+   "name": "Cherry Leopard",
+   "active": true
+  },
+  {
+   "id": "46",
+   "name": "Leopard Gold Sparkle",
+   "active": true
+  },
+  {
+   "id": "47",
+   "name": "Mocha",
+   "active": true
+  },
+  {
+   "id": "48",
+   "name": "Denim Heather",
+   "active": true
+  },
+  {
+   "id": "49",
+   "name": "Black Stardust",
+   "active": true
+  },
+  {
+   "id": "50",
+   "name": "Quilted Cream",
+   "active": false
+  },
+  {
+   "id": "51",
+   "name": "Camel Houndstooth",
+   "active": true
+  },
+  {
+   "id": "52",
+   "name": "Paw Print Black",
+   "active": true
+  },
+  {
+   "id": "53",
+   "name": "Paw Print Cream",
+   "active": true
+  },
+  {
+   "id": "54",
+   "name": "Peppermint Stripe",
+   "active": true
+  },
+  {
+   "id": "55",
+   "name": "Red Fair Isle",
+   "active": true
+  },
+  {
+   "id": "56",
+   "name": "Evergreen Gold",
+   "active": true
+  },
+  {
+   "id": "57",
+   "name": "Gingerbread",
+   "active": true
+  },
+  {
+   "id": "58",
+   "name": "Nordic Reindeer",
+   "active": true
+  },
+  {
+   "id": "59",
+   "name": "Snowflake Grey",
+   "active": true
+  },
+  {
+   "id": "60",
+   "name": "Cherry Red",
+   "active": true
+  },
+  {
+   "id": "61",
+   "name": "Plum",
+   "active": true
+  },
+  {
+   "id": "62",
+   "name": "Dusty Blue",
+   "active": true
+  },
+  {
+   "id": "63",
+   "name": "Sage Green",
+   "active": true
+  },
+  {
+   "id": "64",
+   "name": "Autumn Ombre",
+   "active": true
+  },
+  {
+   "id": "65",
+   "name": "Cardinal Winter",
+   "active": true
+  },
+  {
+   "id": "66",
+   "name": "Sunflower",
+   "active": true
+  },
+  {
+   "id": "67",
+   "name": "Hummingbird Garden",
+   "active": true
+  },
+  {
+   "id": "68",
+   "name": "Butterfly Lilac",
+   "active": true
+  },
+  {
+   "id": "69",
+   "name": "Kitty Grey",
+   "active": true
+  },
+  {
+   "id": "70",
+   "name": "Pink Leopard",
+   "active": true
+  },
+  {
+   "id": "71",
+   "name": "Leopard Red Collar",
+   "active": true
+  },
+  {
+   "id": "72",
+   "name": "Leopard Rhinestone",
+   "active": false
+  },
+  {
+   "id": "73",
+   "name": "Black Crystal Toe",
+   "active": false
+  },
+  {
+   "id": "74",
+   "name": "Pearl Cream",
+   "active": true
+  },
+  {
+   "id": "75",
+   "name": "Champagne Glitter",
+   "active": true
+  },
+  {
+   "id": "76",
+   "name": "Black Velvet Bow",
+   "active": false
+  },
+  {
+   "id": "77",
+   "name": "Cream Red Bow",
+   "active": false
+  },
+  {
+   "id": "78",
+   "name": "Grey Fur Collar",
+   "active": false
+  },
+  {
+   "id": "79",
+   "name": "Leopard Fur Collar",
+   "active": false
+  },
+  {
+   "id": "80",
+   "name": "Red Tartan Fur",
+   "active": false
+  },
+  {
+   "id": "81",
+   "name": "Blue Willow",
+   "active": true
+  },
+  {
+   "id": "82",
+   "name": "Grandma Quilt",
+   "active": true
+  },
+  {
+   "id": "83",
+   "name": "Bandana Paisley",
+   "active": true
+  },
+  {
+   "id": "84",
+   "name": "Nordic Gnome",
+   "active": true
+  },
+  {
+   "id": "85",
+   "name": "Poinsettia",
+   "active": true
+  },
+  {
+   "id": "86",
+   "name": "Rose Chintz",
+   "active": true
+  },
+  {
+   "id": "87",
+   "name": "Butter Yellow",
+   "active": true
+  },
+  {
+   "id": "88",
+   "name": "Cloud Dancer",
+   "active": true
+  },
+  {
+   "id": "89",
+   "name": "Black Fur Collar",
+   "active": false
+  },
+  {
+   "id": "90",
+   "name": "Chocolate Leopard Fur",
+   "active": false
+  },
+  {
+   "id": "91",
+   "name": "Snow Leopard Fur",
+   "active": false
+  },
+  {
+   "id": "92",
+   "name": "Buffalo Fur Collar",
+   "active": false
+  },
+  {
+   "id": "93",
+   "name": "Cow Print Fur Collar",
+   "active": false
+  },
+  {
+   "id": "94",
+   "name": "Blush Bow",
+   "active": false
+  },
+  {
+   "id": "95",
+   "name": "Toffee",
+   "active": true
+  },
+  {
+   "id": "96",
+   "name": "Red Mahogany",
+   "active": true
+  }
+ ]
+}

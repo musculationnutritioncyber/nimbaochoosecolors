@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="robots" content="noindex">
+<title>Nimbao · Pick our next colors</title>
+<meta property="og:title" content="Help us pick our next colors">
+<meta property="og:description" content="Swipe right on the ones you love. It takes one minute.">
+<link rel="icon" href="/assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #2e2a39;
+  --muted: #7a768a;
+  --blue: #516dff;
+  --love: #ff3b6b;
+  --nope: #2e2a39;
+  --bg: #f6f6fa;
+  --card: #ffffff;
+  --line: #e7e6ef;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Roboto, system-ui, sans-serif;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+h1, h2, .btn, .stamp, .count, .name { font-family: Montserrat, system-ui, sans-serif; }
+.app {
+  height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+}
+header { display: flex; align-items: center; justify-content: center; position: relative; height: 52px; flex: none; }
+header img { height: 30px; width: auto; display: block; }
+.count { position: absolute; right: 0; font-weight: 700; font-size: 15px; color: var(--muted); }
+.undo { position: absolute; left: 0; border: 0; background: none; color: var(--muted); font: 600 14px Montserrat, sans-serif; padding: 10px 6px; cursor: pointer; }
+.undo[disabled] { opacity: 0; pointer-events: none; }
+.bar { height: 5px; border-radius: 3px; background: var(--line); overflow: hidden; flex: none; }
+.bar i { display: block; height: 100%; width: 0; background: var(--blue); border-radius: 3px; transition: width .3s; }
+
+.screen { display: none; flex: 0 1 auto; min-height: 0; flex-direction: column; }
+.screen.fav.on { flex: 1; }
+.screen.on { display: flex; }
+
+/* Intro */
+.intro { text-align: center; justify-content: center; gap: 14px; padding: 10px 0 18px; }
+.intro h1 { font-size: clamp(26px, 7.4vw, 34px); line-height: 1.12; margin: 0; font-weight: 800; letter-spacing: -.01em; }
+.intro h1 em { font-style: normal; color: var(--blue); }
+.intro p { margin: 0; font-size: 17px; line-height: 1.45; color: var(--muted); }
+.demo { position: relative; height: min(38dvh, 300px); margin: 6px 0 2px; }
+.demo .dcard {
+  position: absolute; inset: 0; margin: auto; height: 100%; aspect-ratio: 1;
+  background: var(--card); border-radius: 22px; box-shadow: 0 12px 34px rgba(46,42,57,.14);
+  overflow: hidden; animation: demo 5.2s ease-in-out infinite;
+}
+.demo .dcard img { width: 100%; height: 100%; object-fit: contain; }
+.demo .stamp.love { animation: demoLove 5.2s ease-in-out infinite; }
+.demo .stamp.nope { animation: demoNope 5.2s ease-in-out infinite; }
+.demo .hand { position: absolute; left: 50%; bottom: -6px; font-size: 40px; margin-left: -20px; animation: hand 5.2s ease-in-out infinite; filter: drop-shadow(0 3px 6px rgba(0,0,0,.25)); }
+@keyframes demo {
+  0%, 8% { transform: none; } 22%, 38% { transform: translateX(26%) rotate(9deg); }
+  50%, 58% { transform: none; } 72%, 88% { transform: translateX(-26%) rotate(-9deg); } 100% { transform: none; }
+}
+@keyframes hand {
+  0%, 8% { transform: none; } 22%, 38% { transform: translateX(90px); }
+  50%, 58% { transform: none; } 72%, 88% { transform: translateX(-90px); } 100% { transform: none; }
+}
+@keyframes demoLove { 0%, 12% { opacity: 0; } 22%, 38% { opacity: 1; } 48%, 100% { opacity: 0; } }
+@keyframes demoNope { 0%, 62% { opacity: 0; } 72%, 88% { opacity: 1; } 98%, 100% { opacity: 0; } }
+.legend { display: flex; justify-content: center; gap: 12px; font: 700 15px Montserrat, sans-serif; }
+.legend span { white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: #fff; border: 1.5px solid var(--line); }
+.legend .l { color: var(--love); } .legend .n { color: var(--nope); }
+
+.btn {
+  border: 0; border-radius: 999px; background: var(--ink); color: #fff;
+  font-weight: 700; font-size: 18px; padding: 18px 28px; width: 100%; cursor: pointer;
+  box-shadow: 0 8px 20px rgba(46,42,57,.22);
+}
+.btn:active { transform: scale(.98); }
+.btn.blue { background: var(--blue); box-shadow: 0 8px 20px rgba(81,109,255,.35); }
+.btn[disabled] { opacity: .35; box-shadow: none; }
+.link { background: none; border: 0; color: var(--muted); font: 500 15px Roboto, sans-serif; padding: 12px; text-decoration: underline; cursor: pointer; }
+
+/* Deck */
+.stack { position: relative; flex: none; margin: 14px auto 0; width: min(100%, 440px, calc((100dvh - 270px) / 1.12)); aspect-ratio: 1 / 1.12; }
+.card {
+  position: absolute; inset: 0;
+  background: var(--card); border-radius: 24px; overflow: hidden;
+  box-shadow: 0 14px 40px rgba(46,42,57,.14);
+  display: flex; flex-direction: column;
+  will-change: transform; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab;
+  transform-origin: 50% 100%;
+}
+.card.drag { cursor: grabbing; }
+.card img { -webkit-user-drag: none; }
+.card.moving { transition: transform .34s cubic-bezier(.2,.8,.3,1); }
+.card.moving .stamp { transition: opacity .2s; }
+.card .pic { flex: 1; min-height: 0; background: #fff; }
+.card .pic img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; display: block; }
+.card .name { flex: none; text-align: center; font-weight: 700; font-size: 19px; padding: 4px 12px 16px; }
+.stamp {
+  position: absolute; top: 22px; padding: 6px 14px; border: 4px solid; border-radius: 12px;
+  font-weight: 800; font-size: 26px; letter-spacing: .04em; opacity: 0; background: rgba(255,255,255,.85);
+}
+.stamp.love { left: 18px; color: var(--love); transform: rotate(-14deg); }
+.stamp.nope { right: 18px; color: var(--nope); transform: rotate(14deg); }
+
+.actions { flex: none; display: flex; justify-content: center; gap: 12px; padding: 40px 0 12px; width: min(100%, 440px); margin: 0 auto; }
+.pill {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px;
+  height: 64px; border-radius: 999px; border: 0; cursor: pointer;
+  font: 800 18px Montserrat, system-ui, sans-serif; transition: transform .12s;
+}
+.pill:active { transform: scale(.95); }
+.pill svg { width: 26px; height: 26px; flex: none; }
+.pill.nope { background: #fff; color: var(--nope); box-shadow: 0 6px 18px rgba(46,42,57,.14); }
+.pill.love { background: var(--love); color: #fff; box-shadow: 0 8px 22px rgba(255,59,107,.38); }
+
+/* Favorite + thanks */
+.fav h2, .thanks h2 { font-size: 25px; line-height: 1.2; margin: 18px 0 6px; text-align: center; font-weight: 800; }
+.fav p, .thanks p { margin: 0 0 14px; text-align: center; color: var(--muted); font-size: 16px; line-height: 1.45; }
+.grid { flex: 1; min-height: 0; overflow-y: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; align-content: start; padding: 4px 2px 12px; }
+.grid button { border: 3px solid transparent; border-radius: 16px; background: #fff; padding: 0; overflow: hidden; cursor: pointer; aspect-ratio: 1; box-shadow: 0 3px 10px rgba(46,42,57,.08); position: relative; }
+.grid button img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.grid button.sel { border-color: var(--love); }
+.grid button.sel::after { content: "♥"; position: absolute; top: 4px; right: 8px; color: var(--love); font-size: 22px; }
+.fav .foot { flex: none; padding: 8px 0 14px; text-align: center; }
+.thanks { justify-content: center; align-items: center; text-align: center; padding-bottom: 30px; }
+.thanks .big { font-size: 64px; animation: pop .6s cubic-bezier(.2,1.6,.4,1); }
+@keyframes pop { from { transform: scale(0); } }
+.thanks .btn { margin-top: 12px; max-width: 320px; text-decoration: none; display: block; }
+.float { position: fixed; bottom: -40px; font-size: 26px; pointer-events: none; animation: rise 3.2s ease-in forwards; }
+@keyframes rise { to { transform: translateY(-110dvh) rotate(25deg); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .demo .dcard, .demo .hand, .demo .stamp { animation-duration: 12s; } .float { display: none; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <button class="undo" id="undo" disabled>↩ Undo</button>
+    <img src="/assets/logo.png" alt="Nimbao">
+    <span class="count" id="count"></span>
+  </header>
+  <div class="bar" id="bar" hidden><i></i></div>
+
+  <section class="screen intro on" id="s-intro">
+    <h1>Help us pick our<br><em>next colors</em></h1>
+    <p>We designed new <b id="prod">Cloud Slippers</b>.<br>You decide which ones we make.</p>
+    <div class="demo" aria-hidden="true">
+      <div class="dcard">
+        <img id="demoImg" alt="">
+        <span class="stamp love">LOVE IT</span>
+        <span class="stamp nope">NOPE</span>
+      </div>
+      <div class="hand">👆</div>
+    </div>
+    <div class="legend">
+      <span class="n">← Left = Nope</span>
+      <span class="l">Right = Love it →</span>
+    </div>
+    <p style="font-size:15px">Or just tap the Nope and Love it buttons. It takes about a minute.</p>
+    <button class="btn blue" id="start">Start</button>
+  </section>
+
+  <section class="screen" id="s-deck">
+    <div class="stack" id="stack"></div>
+    <div class="actions">
+      <button class="pill nope" id="bNope">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>Nope
+      </button>
+      <button class="pill love" id="bLove">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Love it
+      </button>
+    </div>
+  </section>
+
+  <section class="screen fav" id="s-fav">
+    <h2>One last thing</h2>
+    <p>Out of the ones you loved, which pair would you <b>buy first</b>?</p>
+    <div class="grid" id="grid"></div>
+    <div class="foot">
+      <button class="btn blue" id="send" disabled>Send my vote</button>
+      <button class="link" id="skip">Skip</button>
+    </div>
+  </section>
+
+  <section class="screen thanks" id="s-thanks">
+    <div class="big">💙</div>
+    <h2>Thank you!</h2>
+    <p>Your vote is in. You are helping us design<br>the next Nimbao collection.</p>
+    <a class="btn" href="https://www.nimbao.com/">Back to nimbao.com</a>
+  </section>
+</div>
+
+<script>
+(function () {
+  var KEY = 'nimbao-vote-v1';
+  var $ = function (id) { return document.getElementById(id); };
+  var mem = {};
+  var store = {
+    get: function () { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { return mem.v || null; } },
+    set: function (v) { mem.v = v; try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (e) {} }
+  };
+  function uid() {
+    var a = new Uint8Array(12); (window.crypto || window.msCrypto).getRandomValues(a);
+    return Array.prototype.map.call(a, function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+  }
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  var imgs = {};
+  var img = function (id) { return imgs[id] || '/assets/img/' + id + '.webp'; };
+
+  var names = {};
+  var S = null; // { sid, src, order[], votes[{id,v}], sent, seq, pending, fav, done }
+
+  function show(name) {
+    ['intro', 'deck', 'fav', 'thanks'].forEach(function (n) { $('s-' + n).classList.toggle('on', n === name); });
+    var deck = name === 'deck';
+    $('bar').hidden = !deck;
+    $('count').style.visibility = deck ? 'visible' : 'hidden';
+    $('undo').style.visibility = deck ? 'visible' : 'hidden';
+  }
+
+  // ---- sending -------------------------------------------------------------
+  // A batch is frozen once built, and resent as is until the server takes it.
+  function flush(useBeacon) {
+    if (!S.pending) {
+      var fresh = S.votes.slice(S.sent);
+      var favNew = S.fav && !S.favSent;
+      var doneNew = S.done && !S.doneSent;
+      if (!fresh.length && !favNew && !doneNew) return;
+      S.pending = { sid: S.sid, seq: S.seq, src: S.src, votes: fresh, fav: favNew ? S.fav : null, done: doneNew ? 1 : 0, upto: S.votes.length };
+      S.seq += 1;
+      store.set(S);
+    }
+    var body = JSON.stringify(S.pending);
+    var ok = function () {
+      S.sent = Math.max(S.sent, S.pending.upto);
+      if (S.pending.fav) S.favSent = 1;
+      if (S.pending.done) S.doneSent = 1;
+      S.pending = null; store.set(S);
+    };
+    if (useBeacon && navigator.sendBeacon) {
+      if (navigator.sendBeacon('/api/vote', new Blob([body], { type: 'application/json' }))) ok();
+      return;
+    }
+    if (flush.busy) return;
+    flush.busy = true;
+    fetch('/api/vote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true })
+      .then(function (r) { flush.busy = false; if (r.ok || r.status === 400) { ok(); flush(); } })
+      .catch(function () { flush.busy = false; });
+  }
+  document.addEventListener('visibilitychange', function () { if (S && document.visibilityState === 'hidden') flush(true); });
+
+  // ---- deck ----------------------------------------------------------------
+  function progress() {
+    var n = S.votes.length, t = S.order.length;
+    $('count').textContent = Math.min(n + 1, t) + ' / ' + t;
+    $('bar').firstElementChild.style.width = (n / t * 100) + '%';
+    $('undo').disabled = n === 0 || n <= S.sent || !!(S.pending && n <= S.pending.upto);
+  }
+
+  function makeCard(id) {
+    var el = document.createElement('div');
+    el.className = 'card';
+    el.dataset.id = id;
+    el.innerHTML = '<div class="pic"><img alt="" draggable="false" src="' + img(id) + '"></div>' +
+      '<div class="name"></div><span class="stamp love">LOVE IT</span><span class="stamp nope">NOPE</span>';
+    el.querySelector('.name').textContent = names[id] || '';
+    el.addEventListener('pointerdown', grab);
+    el.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    return el;
+  }
+  function settle(el, depth) {
+    el.style.transform = 'translateY(' + depth * 12 + 'px) scale(' + (1 - depth * 0.05) + ')';
+    el.style.zIndex = 10 - depth;
+  }
+  // The stack keeps up to 3 cards in the DOM: last child = top card.
+  function cards() {
+    return Array.prototype.filter.call($('stack').children, function (c) { return !c.dataset.gone; });
+  }
+  function restack() {
+    var list = cards();
+    list.forEach(function (c, k) { c.classList.add('moving'); settle(c, list.length - 1 - k); });
+  }
+  function render() {
+    var stack = $('stack');
+    stack.innerHTML = '';
+    var i = S.votes.length;
+    for (var d = Math.min(2, S.order.length - i - 1); d >= 0; d--) {
+      var c = makeCard(S.order[i + d]); settle(c, d); stack.appendChild(c);
+    }
+    progress();
+  }
+
+  function decide(v, fromX) {
+    var list = cards();
+    var top = list[list.length - 1];
+    if (!top) return;
+    top.dataset.gone = 1;
+    top.classList.remove('drag');
+    top.classList.add('moving');
+    top.style.zIndex = 20;
+    top.querySelector(v ? '.love' : '.nope').style.opacity = 1;
+    top.querySelector(v ? '.nope' : '.love').style.opacity = 0;
+    var far = Math.max(window.innerWidth, 600);
+    top.style.transform = 'translate(' + (v ? far : -far) + 'px,' + (fromX ? 40 : 0) + 'px) rotate(' + (v ? 28 : -28) + 'deg)';
+    setTimeout(function () { top.remove(); }, 360);
+
+    S.votes.push({ id: top.dataset.id, v: v });
+    store.set(S);
+    if (navigator.vibrate && v) navigator.vibrate(12);
+    if (S.votes.length % 5 === 0) flush();
+    if (S.votes.length >= S.order.length) { progress(); return setTimeout(finishDeck, 300); }
+
+    var nextId = S.order[S.votes.length + 2];
+    if (nextId) {
+      var c = makeCard(nextId); settle(c, 3); c.style.opacity = 0;
+      $('stack').insertBefore(c, $('stack').firstChild);
+      requestAnimationFrame(function () { c.style.transition = 'transform .34s, opacity .34s'; c.style.opacity = 1; });
+    }
+    requestAnimationFrame(restack);
+    progress();
+  }
+
+  // One drag at a time, tracked on window so a release outside the card (or outside
+  // the browser) can never leave the photo stuck to the pointer.
+  var g = null;
+  function grab(e) {
+    var list = cards();
+    if (g || e.currentTarget !== list[list.length - 1] || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    e.preventDefault();
+    g = { el: e.currentTarget, id: e.pointerId, x0: e.clientX, y0: e.clientY, dx: 0, dy: 0, t0: Date.now(), raf: 0 };
+    g.el.classList.remove('moving'); g.el.classList.add('drag');
+  }
+  function paint() {
+    if (!g) return;
+    g.raf = 0;
+    g.el.style.transform = 'translate(' + g.dx + 'px,' + g.dy * 0.35 + 'px) rotate(' + g.dx / 20 + 'deg)';
+    g.el.querySelector('.love').style.opacity = Math.max(0, Math.min(1, g.dx / 80));
+    g.el.querySelector('.nope').style.opacity = Math.max(0, Math.min(1, -g.dx / 80));
+  }
+  function move(e) {
+    if (!g || e.pointerId !== g.id) return;
+    if (e.pointerType === 'mouse' && e.buttons === 0) return drop(e); // button released elsewhere
+    g.dx = e.clientX - g.x0; g.dy = e.clientY - g.y0;
+    if (!g.raf) g.raf = requestAnimationFrame(paint);
+  }
+  function drop(e) {
+    if (!g || (e && e.pointerId !== undefined && e.pointerId !== g.id)) return;
+    var d = g; g = null;
+    if (d.raf) cancelAnimationFrame(d.raf);
+    var fast = Math.abs(d.dx) / Math.max(1, Date.now() - d.t0) > 0.5 && Math.abs(d.dx) > 45;
+    if (Math.abs(d.dx) > 80 || fast) return decide(d.dx > 0 ? 1 : 0, true);
+    d.el.classList.remove('drag'); d.el.classList.add('moving');
+    settle(d.el, 0);
+    d.el.querySelector('.love').style.opacity = 0;
+    d.el.querySelector('.nope').style.opacity = 0;
+  }
+  window.addEventListener('pointermove', move);
+  window.addEventListener('pointerup', drop);
+  window.addEventListener('pointercancel', drop);
+  window.addEventListener('blur', function () { drop(); });
+  document.addEventListener('mouseleave', function () { drop(); });
+
+  $('bLove').onclick = function () { decide(1); };
+  $('bNope').onclick = function () { decide(0); };
+  $('undo').onclick = function () {
+    if (!S.votes.length || S.votes.length <= S.sent || (S.pending && S.votes.length <= S.pending.upto)) return;
+    S.votes.pop(); store.set(S); render();
+  };
+  document.addEventListener('keydown', function (e) {
+    if (!$('s-deck').classList.contains('on')) return;
+    if (e.key === 'ArrowRight') decide(1);
+    if (e.key === 'ArrowLeft') decide(0);
+  });
+
+  // ---- end -----------------------------------------------------------------
+  function finishDeck() {
+    var liked = S.votes.filter(function (v) { return v.v; });
+    if (liked.length < 2) { S.fav = liked.length ? liked[0].id : null; return thanks(); }
+    flush();
+    var grid = $('grid'); grid.innerHTML = '';
+    liked.forEach(function (v) {
+      var b = document.createElement('button');
+      b.innerHTML = '<img alt="" src="' + img(v.id) + '">';
+      b.setAttribute('aria-label', names[v.id] || v.id);
+      b.onclick = function () {
+        Array.prototype.forEach.call(grid.children, function (c) { c.classList.remove('sel'); });
+        b.classList.add('sel'); S.fav = v.id; $('send').disabled = false;
+      };
+      grid.appendChild(b);
+    });
+    show('fav');
+  }
+  $('send').onclick = thanks;
+  $('skip').onclick = function () { S.fav = null; thanks(); };
+
+  function thanks() {
+    S.done = 1; store.set(S); flush();
+    show('thanks');
+    for (var i = 0; i < 14; i++) (function (i) {
+      setTimeout(function () {
+        var h = document.createElement('div'); h.className = 'float'; h.textContent = i % 3 ? '💙' : '❤️';
+        h.style.left = (5 + Math.random() * 90) + '%'; document.body.appendChild(h);
+        setTimeout(function () { h.remove(); }, 3400);
+      }, i * 140);
+    })(i);
+  }
+
+  // ---- boot ----------------------------------------------------------------
+  fetch('/api/deck').then(function (r) { if (!r.ok) throw 0; return r.json(); })
+    .catch(function () { return fetch('/deck.json').then(function (r) { return r.json(); }); })
+    .then(function (deck) {
+    var active = deck.colors.filter(function (c) { return c.active !== false; });
+    active.forEach(function (c) { names[c.id] = c.name; if (c.img) imgs[c.id] = c.img; });
+    $('prod').textContent = deck.product;
+    var src = (new URLSearchParams(location.search).get('src') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 40);
+
+    S = store.get();
+    if (S && S.order) S.order = S.order.filter(function (id) { return names[id]; });
+    if (!S || !S.order || !S.order.length || (src === 'test' && S.done)) {
+      var order = shuffle(active.map(function (c) { return c.id; })).slice(0, deck.perVoter || 30);
+      S = { sid: uid(), src: src, order: order, votes: [], sent: 0, seq: 0, pending: null, fav: null, done: 0 };
+      store.set(S);
+    }
+    $('demoImg').src = img(S.order[S.order.length - 1]);
+    S.order.slice(0, 4).forEach(function (id) { new Image().src = img(id); });
+
+    if (S.done) { show('thanks'); flush(); return; }
+    if (S.votes.length >= S.order.length) { show('deck'); return finishDeck(); }
+    if (S.votes.length) { show('deck'); render(); flush(); return; }
+    show('intro');
+  });
+  $('start').onclick = function () { show('deck'); render(); };
+})();
+</script>
+</body>
+</html>

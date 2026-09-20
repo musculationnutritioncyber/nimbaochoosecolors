@@ -1,0 +1,41 @@
+{
+  "functions": {
+    "api/admin.js": {
+      "maxDuration": 60,
+      "includeFiles": "deck.json"
+    },
+    "api/deck.js": {
+      "maxDuration": 15,
+      "includeFiles": "deck.json"
+    },
+    "api/vote.js": {
+      "maxDuration": 15
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
+      ]
+    },
+    {
+      "source": "/admin(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    }
+  ]
+}
