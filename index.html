@@ -204,6 +204,7 @@ header img { height: 30px; width: auto; display: block; }
     <h2>Thank you!</h2>
     <p>Your vote is in. You are helping us design<br>the next Nimbao collection.</p>
     <a class="btn" href="https://www.nimbao.com/">Back to nimbao.com</a>
+    <button class="link" id="again">Vote again</button>
   </section>
 </div>
 
@@ -228,6 +229,7 @@ header img { height: 30px; width: auto; display: block; }
   var img = function (id) { return imgs[id] || '/assets/img/' + id + '.webp?v=2'; };
 
   var names = {};
+  var fresh = null;
   var S = null; // { sid, src, order[], votes[{id,v}], sent, seq, pending, fav, done }
 
   function show(name) {
@@ -432,14 +434,17 @@ header img { height: 30px; width: auto; display: block; }
     var active = deck.colors.filter(function (c) { return c.active !== false; });
     active.forEach(function (c) { names[c.id] = c.name; if (c.img) imgs[c.id] = c.img; });
     $('prod').textContent = deck.product;
+    fresh = function (tag) {
+      var order = shuffle(active.map(function (c) { return c.id; })).slice(0, deck.perVoter || 30);
+      S = { sid: uid(), src: tag, order: order, votes: [], sent: 0, seq: 0, pending: null, fav: null, done: 0 };
+      store.set(S);
+    };
     var src = (new URLSearchParams(location.search).get('src') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 40);
 
     S = store.get();
     if (S && S.order) S.order = S.order.filter(function (id) { return names[id]; });
     if (!S || !S.order || !S.order.length || (src === 'test' && S.done)) {
-      var order = shuffle(active.map(function (c) { return c.id; })).slice(0, deck.perVoter || 30);
-      S = { sid: uid(), src: src, order: order, votes: [], sent: 0, seq: 0, pending: null, fav: null, done: 0 };
-      store.set(S);
+      fresh(src);
     }
     $('demoImg').src = img(S.order[S.order.length - 1]);
     S.order.slice(0, 4).forEach(function (id) { new Image().src = img(id); });
@@ -450,6 +455,14 @@ header img { height: 30px; width: auto; display: block; }
     show('intro');
   });
   $('start').onclick = function () { show('deck'); render(); };
+  // A second round is a new session, tagged so it can be told apart from first votes.
+  $('again').onclick = function () {
+    if (!fresh) return;
+    var tag = S.src === 'test' ? 'test' : ((S.src || 'direct').replace(/_again$/, '') + '_again').slice(0, 40);
+    fresh(tag);
+    $('start').textContent = 'Start'; $('send').disabled = true;
+    show('intro');
+  };
 })();
 </script>
 </body>
