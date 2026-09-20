@@ -142,7 +142,8 @@ header img { height: 30px; width: auto; display: block; }
 .thanks { justify-content: center; align-items: center; text-align: center; padding-bottom: 30px; }
 .thanks .big { font-size: 64px; animation: pop .6s cubic-bezier(.2,1.6,.4,1); }
 @keyframes pop { from { transform: scale(0); } }
-.thanks .btn { margin-top: 12px; max-width: 320px; text-decoration: none; display: block; }
+.thanks .btn { margin-top: 12px; max-width: 320px; display: block; }
+.thanks .link { display: block; margin-top: 6px; }
 .float { position: fixed; bottom: -40px; font-size: 26px; pointer-events: none; animation: rise 3.2s ease-in forwards; }
 @keyframes rise { to { transform: translateY(-110dvh) rotate(25deg); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .demo .dcard, .demo .hand, .demo .stamp { animation-duration: 12s; } .float { display: none; } }
@@ -203,8 +204,8 @@ header img { height: 30px; width: auto; display: block; }
     <div class="big">💙</div>
     <h2>Thank you!</h2>
     <p>Your vote is in. You are helping us design<br>the next Nimbao collection.</p>
-    <a class="btn" href="https://www.nimbao.com/">Back to nimbao.com</a>
-    <button class="link" id="again">Vote again</button>
+    <button class="btn blue" id="again">Vote again</button>
+    <a class="link" href="https://www.nimbao.com/">Visit nimbao.com</a>
   </section>
 </div>
 
