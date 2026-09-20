@@ -327,7 +327,7 @@ header img { height: 30px; width: auto; display: block; }
     S.votes.push({ id: top.dataset.id, v: v });
     store.set(S);
     if (navigator.vibrate && v) navigator.vibrate(12);
-    if (S.votes.length % 3 === 0) flush();
+    flush(); // every swipe is sent right away (swipes made while a request is in flight ride the next one)
     if (S.votes.length >= S.order.length) { progress(); return setTimeout(finishDeck, 240); }
 
     var nextId = S.order[S.votes.length + 2];
