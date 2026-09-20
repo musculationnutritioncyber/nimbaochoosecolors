@@ -86,14 +86,13 @@ tr.off td:not(:last-child) { opacity: .4; }
   <div class="tools" id="tabs">
     <span class="tab on" data-sort="score">Best bets</span>
     <span class="tab" data-sort="rate">Wear rate</span>
-    <span class="tab" data-sort="fav">Top pick</span>
     <span class="tab" data-sort="worst">Least wanted</span>
     <span class="tab" data-sort="deck">Manage photos</span>
     <label>Min. votes <input id="min" type="number" min="0" value="0"></label>
   </div>
   <p class="note" id="note"></p>
   <div class="tablewrap"><table>
-    <thead><tr><th>#</th><th></th><th>Color</th><th>Wear rate</th><th class="num">♥ Would wear</th><th class="num">✕ Nopes</th><th class="num">Votes</th><th class="num">★ Top pick</th><th>In the vote</th></tr></thead>
+    <thead><tr><th>#</th><th></th><th>Color</th><th>Wear rate</th><th class="num">♥ Would wear</th><th class="num">✕ Nopes</th><th class="num">Votes</th><th>In the vote</th></tr></thead>
     <tbody id="rows"></tbody>
   </table></div>
 </div>
@@ -168,7 +167,7 @@ tr.off td:not(:last-child) { opacity: .4; }
         '<td><img loading="lazy" src="' + r.img + '" alt=""></td>' +
         '<td class="nm">' + r.name + '<small>#' + r.id + (r.active ? '' : ' · hidden from voters') + '</small></td>' +
         '<td><div class="rate"><i><u style="width:' + pct + '%"></u></i><b>' + (r.n ? pct + '%' : '—') + '</b></div></td>' +
-        '<td class="num">' + r.l + '</td><td class="num">' + r.d + '</td><td class="num">' + r.n + '</td><td class="num">' + r.f + '</td><td><button type="button" class="sw' + (r.active ? ' on' : '') + '" data-id="' + r.id + '" aria-label="In the vote"></button></td></tr>';
+        '<td class="num">' + r.l + '</td><td class="num">' + r.d + '</td><td class="num">' + r.n + '</td><td><button type="button" class="sw' + (r.active ? ' on' : '') + '" data-id="' + r.id + '" aria-label="In the vote"></button></td></tr>';
     }).join('');
   }
 
@@ -223,9 +222,9 @@ tr.off td:not(:last-child) { opacity: .4; }
   };
   $('zoom').onclick = function () { $('zoom').classList.remove('on'); };
   $('csv').onclick = function () {
-    var lines = ['rank,id,color,love_rate,loves,nopes,votes,buy_first,score'];
+    var lines = ['rank,id,color,wear_rate,would_wear,not_for_me,votes,score'];
     rowsSorted().forEach(function (r, i) {
-      lines.push([i + 1, r.id, '"' + r.name + '"', r.rate.toFixed(4), r.l, r.d, r.n, r.f, r.score.toFixed(4)].join(','));
+      lines.push([i + 1, r.id, '"' + r.name + '"', r.rate.toFixed(4), r.l, r.d, r.n, r.score.toFixed(4)].join(','));
     });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([lines.join('\n')], { type: 'text/csv' }));

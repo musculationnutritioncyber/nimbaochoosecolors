@@ -396,23 +396,8 @@ header img { height: 30px; width: auto; display: block; }
   });
 
   // ---- end -----------------------------------------------------------------
-  function finishDeck() {
-    var liked = S.votes.filter(function (v) { return v.v; });
-    if (liked.length < 2) { S.fav = liked.length ? liked[0].id : null; return thanks(); }
-    flush();
-    var grid = $('grid'); grid.innerHTML = '';
-    liked.forEach(function (v) {
-      var b = document.createElement('button');
-      b.innerHTML = '<img alt="" src="' + img(v.id) + '">';
-      b.setAttribute('aria-label', names[v.id] || v.id);
-      b.onclick = function () {
-        Array.prototype.forEach.call(grid.children, function (c) { c.classList.remove('sel'); });
-        b.classList.add('sel'); S.fav = v.id; $('send').disabled = false;
-      };
-      grid.appendChild(b);
-    });
-    show('fav');
-  }
+  // No extra question at the end: the last swipe goes straight to the thank-you screen.
+  function finishDeck() { thanks(); }
   $('send').onclick = thanks;
   $('skip').onclick = function () { S.fav = null; thanks(); };
 
