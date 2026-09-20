@@ -1,8 +1,8 @@
 import crypto from 'node:crypto';
-import { aggregate, loadDeck, saveDeck, saveImage } from '../lib/store.js';
+import { ADMIN_PIN, aggregate, loadDeck, saveDeck, saveImage } from '../lib/store.js';
 
 function pinOk(given) {
-  const pin = process.env.ADMIN_PIN || '';
+  const pin = ADMIN_PIN;
   if (!pin || typeof given !== 'string') return false;
   const a = crypto.createHash('sha256').update(given).digest();
   const b = crypto.createHash('sha256').update(pin).digest();
