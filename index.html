@@ -94,7 +94,9 @@ header img { height: 30px; width: auto; display: block; }
 .link { background: none; border: 0; color: var(--muted); font: 500 15px Roboto, sans-serif; padding: 12px; text-decoration: underline; cursor: pointer; }
 
 /* Deck */
-.stack { position: relative; flex: none; margin: 14px auto 0; width: min(100%, 440px, calc((100dvh - 270px) / 1.12)); aspect-ratio: 1 / 1.12; }
+.ask { flex: none; margin: 12px 0 0; text-align: center; font: 700 18px Montserrat, system-ui, sans-serif; }
+.ask b { color: var(--love); }
+.stack { position: relative; flex: none; margin: 14px auto 0; width: min(100%, 440px, calc((100dvh - 310px) / 1.12)); aspect-ratio: 1 / 1.12; }
 .card {
   position: absolute; inset: 0;
   background: var(--card); border-radius: 24px; overflow: hidden;
@@ -111,15 +113,15 @@ header img { height: 30px; width: auto; display: block; }
 .card .pic img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; display: block; }
 .card .name { flex: none; text-align: center; font-weight: 700; font-size: 19px; padding: 4px 12px 16px; }
 .stamp {
-  position: absolute; top: 22px; padding: 6px 14px; border: 4px solid; border-radius: 12px;
-  font-weight: 800; font-size: 26px; letter-spacing: .04em; opacity: 0; background: rgba(255,255,255,.85);
+  position: absolute; top: 22px; padding: 6px 12px; border: 4px solid; border-radius: 12px;
+  font-weight: 800; font-size: 21px; white-space: nowrap; letter-spacing: .04em; opacity: 0; background: rgba(255,255,255,.85);
 }
 .stamp.love { left: 18px; color: var(--love); transform: rotate(-14deg); }
 .stamp.nope { right: 18px; color: var(--nope); transform: rotate(14deg); }
 
 .actions { flex: none; display: flex; justify-content: center; gap: 12px; padding: 40px 0 12px; width: min(100%, 440px); margin: 0 auto; }
 .pill {
-  flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px;
+  flex: 1; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 10px;
   height: 64px; border-radius: 999px; border: 0; cursor: pointer;
   font: 800 18px Montserrat, system-ui, sans-serif; transition: transform .12s;
 }
@@ -156,39 +158,40 @@ header img { height: 30px; width: auto; display: block; }
   <div class="bar" id="bar" hidden><i></i></div>
 
   <section class="screen intro on" id="s-intro">
-    <h1>Help us pick our<br><em>next colors</em></h1>
-    <p>We designed new <b id="prod">Cloud Slippers</b>.<br>You decide which ones we make.</p>
+    <h1>Which ones would<br><em>you wear?</em></h1>
+    <p>We designed new <b id="prod">Cloud Slippers</b> and you decide which ones we make. Don't pick what looks pretty: say yes <b>only to the pairs you'd really wear</b>.</p>
     <div class="demo" aria-hidden="true">
       <div class="dcard">
         <img id="demoImg" alt="">
-        <span class="stamp love">LOVE IT</span>
-        <span class="stamp nope">NOPE</span>
+        <span class="stamp love">I'D WEAR IT</span>
+        <span class="stamp nope">NOT FOR ME</span>
       </div>
       <div class="hand">👆</div>
     </div>
     <div class="legend">
-      <span class="n">← Left = Nope</span>
-      <span class="l">Right = Love it →</span>
+      <span class="n">← Not for me</span>
+      <span class="l">I'd wear it →</span>
     </div>
-    <p style="font-size:15px">Or just tap the Nope and Love it buttons. It takes about a minute.</p>
+    <p style="font-size:15px">Swipe, or just tap the buttons. It takes about a minute.</p>
     <button class="btn blue" id="start">Start</button>
   </section>
 
   <section class="screen" id="s-deck">
+    <p class="ask">Would you <b>wear</b> this pair?</p>
     <div class="stack" id="stack"></div>
     <div class="actions">
       <button class="pill nope" id="bNope">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>Nope
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>Not for me
       </button>
       <button class="pill love" id="bLove">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Love it
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>I'd wear it
       </button>
     </div>
   </section>
 
   <section class="screen fav" id="s-fav">
     <h2>One last thing</h2>
-    <p>Out of the ones you loved, which pair would you <b>buy first</b>?</p>
+    <p>Out of your picks, which pair do you want <b>on your feet first</b>?</p>
     <div class="grid" id="grid"></div>
     <div class="foot">
       <button class="btn blue" id="send" disabled>Send my vote</button>
@@ -279,7 +282,7 @@ header img { height: 30px; width: auto; display: block; }
     el.className = 'card';
     el.dataset.id = id;
     el.innerHTML = '<div class="pic"><img alt="" draggable="false" src="' + img(id) + '"></div>' +
-      '<div class="name"></div><span class="stamp love">LOVE IT</span><span class="stamp nope">NOPE</span>';
+      '<div class="name"></div><span class="stamp love">I&#39;D WEAR IT</span><span class="stamp nope">NOT FOR ME</span>';
     el.querySelector('.name').textContent = names[id] || '';
     el.addEventListener('pointerdown', grab);
     el.addEventListener('dragstart', function (e) { e.preventDefault(); });
@@ -443,7 +446,7 @@ header img { height: 30px; width: auto; display: block; }
 
     if (S.done) { show('thanks'); flush(); return; }
     if (S.votes.length >= S.order.length) { show('deck'); return finishDeck(); }
-    if (S.votes.length) { show('deck'); render(); flush(); return; }
+    if (S.votes.length) { $('start').textContent = 'Continue'; flush(); }
     show('intro');
   });
   $('start').onclick = function () { show('deck'); render(); };

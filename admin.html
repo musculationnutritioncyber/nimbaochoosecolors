@@ -85,15 +85,15 @@ tr.off td:not(:last-child) { opacity: .4; }
   </form>
   <div class="tools" id="tabs">
     <span class="tab on" data-sort="score">Best bets</span>
-    <span class="tab" data-sort="rate">Love rate</span>
-    <span class="tab" data-sort="fav">Would buy first</span>
-    <span class="tab" data-sort="worst">Least loved</span>
+    <span class="tab" data-sort="rate">Wear rate</span>
+    <span class="tab" data-sort="fav">Top pick</span>
+    <span class="tab" data-sort="worst">Least wanted</span>
     <span class="tab" data-sort="deck">Manage photos</span>
     <label>Min. votes <input id="min" type="number" min="0" value="0"></label>
   </div>
   <p class="note" id="note"></p>
   <div class="tablewrap"><table>
-    <thead><tr><th>#</th><th></th><th>Color</th><th>Love rate</th><th class="num">♥ Loves</th><th class="num">✕ Nopes</th><th class="num">Votes</th><th class="num">★ Buy first</th><th>In the vote</th></tr></thead>
+    <thead><tr><th>#</th><th></th><th>Color</th><th>Wear rate</th><th class="num">♥ Would wear</th><th class="num">✕ Nopes</th><th class="num">Votes</th><th class="num">★ Top pick</th><th>In the vote</th></tr></thead>
     <tbody id="rows"></tbody>
   </table></div>
 </div>
@@ -154,10 +154,10 @@ tr.off td:not(:last-child) { opacity: .4; }
     ];
     $('kpis').innerHTML = kp.map(function (k) { return '<div class="kpi"><span>' + k[0] + '</span><b>' + k[1] + '</b></div>'; }).join('');
     $('note').textContent = {
-      score: 'Best bets = love rate corrected for the number of votes, so a colour seen by few people cannot top the list by luck.',
-      rate: 'Raw love rate = loves ÷ votes. Check the Votes column before trusting a high rate.',
-      fav: 'The pair each voter picked as the one she would buy first, among those she loved.',
-      worst: 'Lowest love rate first: the colours to drop.',
+      score: 'Best bets = wear rate corrected for the number of votes, so a colour seen by few people cannot top the list by luck.',
+      rate: 'Raw wear rate = loves ÷ votes. Check the Votes column before trusting a high rate.',
+      fav: 'The pair each voter picked as the one she wants to wear first, among those she loved.',
+      worst: 'Lowest wear rate first: the colours to drop.',
       deck: 'Switch off any photo you do not want voters to see. Changes reach the voting page within a minute; votes already cast are kept.'
     }[sort];
     var on = data.colors.filter(function (c) { return c.active; }).length;
